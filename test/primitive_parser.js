@@ -282,5 +282,15 @@ describe('Primitive parser', function(){
             result.raw[0] = 0xff;
             assert.notDeepEqual(result.raw, buf);
         });
+        it('should parse until eof', function() {
+            var parser = new Parser()
+                .buffer('raw', {
+                    readUntil: 'eof'
+                });
+
+            var buf = new Buffer('deadbeef', 'hex');
+            var result = parser.parse(buf);
+            assert.deepEqual(result.raw, buf);
+        });
     });
 });
