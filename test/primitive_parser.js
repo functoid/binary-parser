@@ -206,6 +206,26 @@ describe('Primitive parser', function(){
                 }
             });
         });
+        it('should format individual bit fields', function() {
+            var parser = new Parser()
+                .bit1('a', {
+                    formatter: function (val) { return val ? true : false; }
+                })
+                .bit3('b', {
+                    formatter: function (val) { return val.toString(2); }
+                })
+                .bit4('c', {
+                    formatter: function (val) { return val.toString(16); }
+                });
+
+            var buf = binaryLiteral('1 101 0101');
+
+            assert.deepEqual(parser.parse(buf), {
+                a: true,
+                b: '101',
+                c: '5'
+            });
+        });
     });
 
     describe('String parser', function() {
