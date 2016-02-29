@@ -69,6 +69,18 @@ describe('Primitive parser', function(){
             var buffer = new Buffer([0x00, 0xff, 0xff, 0xfe, 0xd2, 0x04, 0x00, 0xbc, 0x61, 0x4e]);
             assert.deepEqual(parser.parse(buffer), {a: 0, b: 1234, c: 12345678});
         });
+        it('should capture enclosing scope in formatter', function(){
+            var FACTOR = 3;
+            var parser =
+            Parser.start()
+            .uint8('a', {
+                capture: true,
+                formatter: function (val) { return val * FACTOR; }
+            });
+
+            var buffer = new Buffer([0x03]);
+            assert.deepEqual(parser.parse(buffer), {a: 9});
+        });
     });
 
     describe('Bit field parsers', function() {
