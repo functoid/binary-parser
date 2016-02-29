@@ -338,5 +338,19 @@ describe('Primitive parser', function(){
                 checksum: 0xDD
             });
         });
+        it('should parse until a marker byte-sequence is found', function() {
+            var parser = new Parser()
+                .buffer('data', {
+                    readUntil: new Buffer([0xEF, 0x00])
+                })
+                .uint8('x');
+
+            var buf = new Buffer('deadbeefef00ff', 'hex');
+
+            assert.deepEqual(parser.parse(buf), {
+                data: new Buffer('deadbeef', 'hex'),
+                x: 0xFF
+            });
+        });
     });
 });
