@@ -242,6 +242,20 @@ describe('Primitive parser', function(){
                 d: 0x4
             });
         });
+        it('should parse bit fields at byte boundaries', function() {
+            var parser = new Parser()
+                .bit24('a')
+                .bit24('b')
+                .bit24('c');
+
+            var buf = new Buffer('ffffff000000777777', 'hex');
+
+            assert.deepEqual(parser.parse(buf), {
+                a: 0xffffff,
+                b: 0,
+                c: 0x777777
+            });
+        });
     });
 
     describe('String parser', function() {
