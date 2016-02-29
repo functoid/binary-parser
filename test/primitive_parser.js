@@ -324,5 +324,19 @@ describe('Primitive parser', function(){
             var result = parser.parse(buf);
             assert.deepEqual(result.raw, buf);
         });
+        it('should parse until an offset from eof', function() {
+            var parser = new Parser()
+                .buffer('data', {
+                    readUntil: -1
+                })
+                .uint8('checksum');
+
+            var buf = new Buffer('deadbeefdd', 'hex');
+
+            assert.deepEqual(parser.parse(buf), {
+                data: new Buffer('deadbeef', 'hex'),
+                checksum: 0xDD
+            });
+        });
     });
 });
