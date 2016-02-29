@@ -226,6 +226,22 @@ describe('Primitive parser', function(){
                 c: '5'
             });
         });
+        it('should parse consecutive bit fields on 32-bit boundaries', function() {
+            var parser = new Parser()
+                .bit31('a')
+                .bit1('b')
+                .bit4('c')
+                .bit4('d');
+
+            var buf = binaryLiteral('1111111111111111111111111111111 0 1011 0100');
+
+            assert.deepEqual(parser.parse(buf), {
+                a: 0x7fffffff,
+                b: 0,
+                c: 0xB,
+                d: 0x4
+            });
+        });
     });
 
     describe('String parser', function() {
